@@ -6,10 +6,10 @@ This branch integrates Codex with the ELV (Embodied Learning Volition) exoskelet
 
 Codex calls `elv-core` (Python) as a subprocess for:
 
-- `codex review --due` → FSRS spaced repetition: get due review items
-- `codex review --grade <id> <rating>` → Grade a review session (again|hard|good|easy)
-- `codex state --report` → Report learner state (energy/focus/readiness)
-- `codex mastery <atom-id>` → Query mastery score for a knowledge atom
+- `codex elv review queue --vault <vault>` → FSRS spaced repetition: get due review items
+- `codex elv review grade --vault <vault> --item <id> --grade <rating>` → Grade a review session (again|hard|good|easy)
+- `codex elv learner-state report --vault <vault>` → Report learner state (energy/focus/readiness)
+- `codex elv mastery show --vault <vault> --atom <atom-id>` → Query mastery score for a knowledge atom
 
 ## elv-core Package
 

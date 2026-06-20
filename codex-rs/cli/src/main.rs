@@ -49,6 +49,7 @@ mod app_cmd;
 #[cfg(any(target_os = "macos", target_os = "windows"))]
 mod desktop_app;
 mod doctor;
+mod elv_cmd;
 mod exec_server_telemetry;
 mod marketplace_cmd;
 mod mcp_cmd;
@@ -128,6 +129,9 @@ enum Subcommand {
 
     /// Run a code review non-interactively.
     Review(ReviewCommand),
+
+    /// Run ELV learner tools.
+    Elv(elv_cmd::ElvCommand),
 
     /// Manage login.
     Login(LoginCommand),
@@ -1035,6 +1039,14 @@ async fn cli_main(
                 root_config_overrides.clone(),
             );
             codex_exec::run_main(exec_cli, arg0_paths.clone()).await?;
+        }
+        Some(Subcommand::Elv(elv_cli)) => {
+            reject_remote_mode_for_subcommand(
+                root_remote.as_deref(),
+                root_remote_auth_token_env.as_deref(),
+                "elv",
+            )?;
+            elv_cmd::run(elv_cli).await?;
         }
         Some(Subcommand::McpServer(McpServerCommand { strict_config })) => {
             reject_remote_mode_for_subcommand(
