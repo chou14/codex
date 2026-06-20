@@ -42,6 +42,13 @@ pub async fn run(cmd: ElvCommand) -> anyhow::Result<()> {
 }
 
 fn adjacent_elv_core_src() -> Option<PathBuf> {
+    if let Ok(src) = env::var("ELV_CORE_SRC") {
+        let candidate = PathBuf::from(src);
+        if candidate.exists() {
+            return Some(candidate);
+        }
+    }
+
     let cwd = env::current_dir().ok()?;
     let candidate = cwd.parent()?.join("EmbodiedLearningVolition").join("src");
     candidate.exists().then_some(candidate)
