@@ -1,3 +1,36 @@
+# ELV Integration (elv-integration branch)
+
+This branch integrates Codex with the ELV (Embodied Learning Volition) exoskeleton — a human-factors learning system.
+
+## Integration Points
+
+Codex calls `elv-core` (Python) as a subprocess for:
+
+- `codex review --due` → FSRS spaced repetition: get due review items
+- `codex review --grade <id> <rating>` → Grade a review session (again|hard|good|easy)
+- `codex state --report` → Report learner state (energy/focus/readiness)
+- `codex mastery <atom-id>` → Query mastery score for a knowledge atom
+
+## elv-core Package
+
+- Source: `../EmbodiedLearningVolition/src/elv_core/`
+- Install: `pip install -e ../EmbodiedLearningVolition`
+- Dependencies: PyYAML>=6.0, optional: fsrs>=0.5
+- Python >= 3.11 required
+
+## Architecture
+
+```
+Codex Agent (Rust/TS)
+  └─ elv subcommand ──subprocess──→ python -m elv_core.cli
+       ├── fsrs review scheduling
+       ├── mastery estimation
+       ├── learner state tracking
+       └── attention control policy
+```
+
+---
+
 # Rust/codex-rs
 
 In the codex-rs folder where the rust code lives:
